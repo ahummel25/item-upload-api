@@ -1,0 +1,13 @@
+---
+applications:
+- name: item-upload-api
+  instances: 2
+  memory: 1200M
+  disk_quota: 256M
+  services:
+  - logdrain
+  - config-service
+  - splunk-http-collector
+  - oracle-erp-sb
+
+

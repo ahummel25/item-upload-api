@@ -1,0 +1,6 @@
+response.status 404
+
+json {
+    message "Valid file was not found"
+    error 404
+}

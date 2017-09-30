@@ -1,0 +1,104 @@
+buildscript {
+  ext {
+    grailsVersion = project.grailsVersion
+  }
+  repositories {
+    maven { url "http://prodcit01.wwt.com:8081/nexus/content/groups/public" }
+    maven { url "http://prodcit01.wwt.com:8081/nexus/content/repositories/wwt" }
+    mavenLocal()
+    maven { url "https://repo.grails.org/grails/core" }
+  }
+  dependencies {
+    classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+    classpath "org.grails.plugins:hibernate4:5.0.2"
+    classpath "net.saliman:gradle-cobertura-plugin:2.+"
+    classpath "org.grails.plugins:views-gradle:1.0.3"
+    classpath "io.spring.gradle:dependency-management-plugin:0.6.1.RELEASE"
+  }
+}
+
+plugins {
+  id "net.saliman.cobertura" version "2.3.0"
+}
+
+version "1.0.0"
+group "com.wwt.itemuploadapi"
+
+apply plugin:"eclipse"
+apply plugin:"idea"
+apply plugin:"war"
+apply plugin:"org.grails.grails-web"
+apply plugin:"net.saliman.cobertura"
+apply plugin:"org.grails.plugins.views-json"
+
+
+ext {
+  grailsVersion = project.grailsVersion
+  gradleWrapperVersion = project.gradleWrapperVersion
+}
+
+war {
+  archiveName = project.hasProperty('warName') ? project.property('warName') : "${rootProject.name}.war"
+}
+
+repositories {
+  maven { url "http://prodcit01.wwt.com:8081/nexus/content/groups/public" }
+  maven { url "http://prodcit01.wwt.com:8081/nexus/content/repositories/wwt" }
+  mavenLocal()
+  maven { url "https://repo.grails.org/grails/core" }
+}
+
+dependencyManagement {
+  imports {
+    mavenBom "org.grails:grails-bom:$grailsVersion"
+  }
+  applyMavenExclusions false
+}
+
+dependencies {
+  compile "org.springframework.boot:spring-boot-starter-logging"
+  compile "org.springframework.boot:spring-boot-autoconfigure"
+  compile "org.grails:grails-core"
+  compile "org.springframework.boot:spring-boot-starter-actuator"
+  compile "org.springframework.boot:spring-boot-starter-tomcat"
+  compile "org.grails:grails-plugin-url-mappings"
+  compile "org.grails:grails-plugin-rest"
+  compile "org.grails:grails-plugin-codecs"
+  compile "org.grails:grails-plugin-interceptors"
+  compile "org.grails:grails-plugin-services"
+  compile "org.grails:grails-plugin-datasource"
+  compile "org.grails:grails-plugin-databinding"
+  compile "org.grails:grails-plugin-async"
+  compile "org.grails:grails-web-boot"
+  compile "org.grails:grails-logging"
+  compile "org.grails.plugins:cache"
+  compile "org.grails.plugins:views-json"
+  
+  compile "org.grails.plugins:hibernate4"
+  compile "org.hibernate:hibernate-ehcache"
+  compile "org.grails.plugins:grails3-cors-interceptor:1.2.1"
+  console "org.grails:grails-console"
+  profile "org.grails.profiles:rest-api:3.1.8"
+  testCompile "org.grails:grails-plugin-testing"
+  testCompile "org.grails.plugins:geb"
+  testCompile "org.grails:grails-datastore-rest-client"
+  testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
+  testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
+
+  compile "org.apache.poi:poi:3.14"
+  compile "org.apache.poi:poi-ooxml:3.14"
+
+  //compile files('lib/ojdbc6.jar')
+  compile 'com.wwt:wwt-cloud-foundry:2.+'
+  compile 'com.wwt:wwtsecurity:2.+'
+  compile 'com.oracle:ojdbc6:11.2.0.3'
+  compile 'com.wwt.splunk.logging:wwt-splunk-javalogging:1.+'
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = gradleWrapperVersion
+}
+
+cobertura {
+  coverageFormats = ['xml']
+}
